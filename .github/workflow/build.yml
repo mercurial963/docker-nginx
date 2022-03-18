@@ -1,0 +1,23 @@
+name: Docker build
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - backend/**
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Kaniko build
+        uses: aevea/action-kaniko@master
+        with:
+          registry: ghcr.io
+          password: ${{ secrets.GITHUB_TOKEN }}
+          build_file: Dockerfile
+          path: backend/
+          image: backend
+          tag: v1.0
+          cache: true
+          cache_registry: cache     
